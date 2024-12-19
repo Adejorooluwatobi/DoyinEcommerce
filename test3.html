@@ -1,0 +1,163 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Display</title>
+    <!-- Add your CSS files here -->
+    <link rel="stylesheet" href="assets/css/your-styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="axil-product-area bg-color-white axil-section-gap pb--0">
+        <div class="container">
+            <div class="product-area pb--80">
+                <div class="section-title-wrapper">
+                    <span class="title-highlighter highlighter-primary">
+                        <i class="far fa-shopping-basket"></i> Our Products
+                    </span>
+                    <h2 class="title">Explore our Products</h2>
+                </div>
+                <div class="row row--15">
+                    <!-- Products will be dynamically inserted here -->
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 text-center mt--20 mt_sm--0">
+                        <a href="shop.html" class="axil-btn btn-bg-lighter btn-load-more">View All Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add your JavaScript file -->
+    <script>
+        // products.js
+document.addEventListener('DOMContentLoaded', function() {
+    fetchProducts();
+});
+
+async function fetchProducts() {
+    try {
+        const response = await fetch('http://localhost:4000/product');
+        const products = await response.json();
+        displayProducts(products);
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        displayError('Failed to load products. Please try again later.');
+    }
+}
+
+function displayProducts(products) {
+    const productsContainer = document.querySelector('.row--15');
+    productsContainer.innerHTML = ''; // Clear existing content
+
+    products.forEach(product => {
+        const productHTML = createProductHTML(product);
+        productsContainer.innerHTML += productHTML;
+    });
+}
+
+function createProductHTML(product) {
+    // Calculate discount percentage if there's a price difference
+    const originalPrice = parseFloat(product.price);
+    const discountedPrice = originalPrice * 0.8; // Example: 20% discount
+    const hasDiscount = true; // You can modify this based on your needs
+
+    const discountBadge = hasDiscount ? `
+        <div class="label-block label-right">
+            <div class="product-badget">20% OFF</div>
+        </div>
+    ` : '';
+
+    return `
+        <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30">
+            <div class="axil-product product-style-one">
+                <div class="thumbnail">
+                    <a href="single-product-3.html">
+                        <img data-sal="fade" 
+                             data-sal-delay="100" 
+                             data-sal-duration="1500" 
+                             src="${product.image || 'assets/images/product/default.png'}" 
+                             alt="${product.name}">
+                    </a>
+                    ${discountBadge}
+                    <div class="product-hover-action">
+                        <ul class="cart-action">
+                            <li class="wishlist">
+                                <a href="wishlist.html"><i class="far fa-heart"></i></a>
+                            </li>
+                            <li class="select-option">
+                                <a href="cart.html">Add to Cart</a>
+                            </li>
+                            <li class="quickview">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
+                                    <i class="far fa-eye"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="product-content">
+                    <div class="inner">
+                        <h5 class="title">
+                            <a href="single-product-3.html">${product.name}</a>
+                        </h5>
+                        <div class="product-price-variant">
+                            <span class="price old-price">$${originalPrice}</span>
+                            <span class="price current-price">$${discountedPrice.toFixed(2)}</span>
+                        </div>
+                        <div class="color-variant-wrapper">
+                            <ul class="color-variant">
+                                <li class="color-extra-01 active">
+                                    <span><span class="color"></span></span>
+                                </li>
+                                <li class="color-extra-02">
+                                    <span><span class="color"></span></span>
+                                </li>
+                                <li class="color-extra-03">
+                                    <span><span class="color"></span></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function displayError(message) {
+    const container = document.querySelector('.row--15');
+    container.innerHTML = `
+        <div class="col-12 text-center">
+            <div class="alert alert-danger" role="alert">
+                ${message}
+            </div>
+        </div>
+    `;
+}
+
+// Add event listeners for interactions
+document.addEventListener('click', function(e) {
+    if (e.target.matches('.quickview a')) {
+        e.preventDefault();
+        const productCard = e.target.closest('.axil-product');
+        // Implement quick view functionality
+    }
+    
+    if (e.target.matches('.select-option a')) {
+        e.preventDefault();
+        // Implement add to cart functionality
+    }
+    
+    if (e.target.matches('.wishlist a')) {
+        e.preventDefault();
+        // Implement wishlist functionality
+    }
+});
+    </script>
+</body>
+</html>

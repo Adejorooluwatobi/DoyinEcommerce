@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Posts</title>
+</head>
+<body>
+    <div class="axil-team-area bg-wild-sand">
+        <div class="team-left-fullwidth">
+            <div class="container ml--xxl-0">
+                <div class="section-title-wrapper">
+                    <span class="title-highlighter highlighter-primary"> <i class="fas fa-users"></i> Our Team</span>
+                    <h3 class="title">Expart Management Team</h3>
+                </div>
+                <div class="team-slide-activation slick-layout-wrapper--20 axil-slick-arrow  arrow-top-slide">
+                    <div class="slick-single-layout">
+                        <div class="axil-team-member">
+                            <div class="thumbnail"><img src="assets/images/team/team-01.png" alt="Cody Fisher"></div>
+                            <div class="team-content">
+                                <span class="subtitle">Founder</span>
+                                <h5 class="title">Rosalina D. Willson</h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+       // Function to fetch and display team members
+// Function to fetch team members and populate the team section
+async function fetchAndPopulateTeamMembers() {
+    try {
+        // Fetch team members from the backend
+        const response = await fetch('http://localhost:4000/team');
+        
+        // Check if the response is ok
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        // Parse the JSON response
+        const teamMembers = await response.json();
+        
+        // Get the team slide container
+        const teamSlideContainer = document.querySelector('.team-slide-activation');
+        
+        // Clear existing team members (if any)
+        teamSlideContainer.innerHTML = '';
+        
+        // Iterate through team members and create slide layouts
+        teamMembers.forEach(member => {
+            // Create slide layout div
+            const slideLayout = document.createElement('div');
+            slideLayout.className = 'slick-single-layout';
+            
+            // Create team member div
+            const teamMemberDiv = document.createElement('div');
+            teamMemberDiv.className = 'axil-team-member';
+            
+            // Create thumbnail div
+            const thumbnailDiv = document.createElement('div');
+            thumbnailDiv.className = 'thumbnail';
+            const img = document.createElement('img');
+            img.src = `http://localhost:4000/uploads/${member.image}`; // Assuming images are served from uploads folder
+            img.alt = member.name;
+            thumbnailDiv.appendChild(img);
+            
+            // Create team content div
+            const teamContentDiv = document.createElement('div');
+            teamContentDiv.className = 'team-content';
+            
+            // Create subtitle span
+            const subtitleSpan = document.createElement('span');
+            subtitleSpan.className = 'subtitle';
+            subtitleSpan.textContent = member.designation;
+            
+            // Create title h5
+            const titleH5 = document.createElement('h5');
+            titleH5.className = 'title';
+            titleH5.textContent = member.name;
+            
+            // Assemble the team member div
+            teamContentDiv.appendChild(subtitleSpan);
+            teamContentDiv.appendChild(titleH5);
+            
+            teamMemberDiv.appendChild(thumbnailDiv);
+            teamMemberDiv.appendChild(teamContentDiv);
+            
+            slideLayout.appendChild(teamMemberDiv);
+            
+            // Add social media links if available
+            if (member.facebook || member.linkedin) {
+                const socialDiv = document.createElement('div');
+                socialDiv.className = 'team-social';
+                
+                if (member.facebook) {
+                    const fbLink = document.createElement('a');
+                    fbLink.href = member.facebook;
+                    fbLink.innerHTML = '<i class="fab fa-facebook-f"></i>';
+                    socialDiv.appendChild(fbLink);
+                }
+                
+                if (member.linkedin) {
+                    const linkedinLink = document.createElement('a');
+                    linkedinLink.href = member.linkedin;
+                    linkedinLink.innerHTML = '<i class="fab fa-linkedin-in"></i>';
+                    socialDiv.appendChild(linkedinLink);
+                }
+                
+                teamMemberDiv.appendChild(socialDiv);
+            }
+            
+            // Add to the container
+            teamSlideContainer.appendChild(slideLayout);
+        });
+        
+        // Reinitialize Slick slider if it exists
+        if (typeof $ !== 'undefined' && $.fn.slick) {
+            $('.team-slide-activation').slick('unslick').slick({
+                dots: false,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                arrows: true,
+                responsive: [
+                    {
+                        breakpoint: 1199,
+                        settings: {
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 991,
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    },
+                    {
+                        breakpoint: 575,
+                        settings: {
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+            });
+        }
+    } catch (error) {
+        console.error('Error fetching team members:', error);
+        
+        // Optional: Display an error message in the UI
+        const teamSlideContainer = document.querySelector('.team-slide-activation');
+        teamSlideContainer.innerHTML = `
+            <div class="error-message">
+                <p>Unable to load team members. Please try again later.</p>
+            </div>
+        `;
+    }
+}
+
+// Call the function when the page loads
+document.addEventListener('DOMContentLoaded', fetchAndPopulateTeamMembers);
+
+</script>
+</body>
+</html>
