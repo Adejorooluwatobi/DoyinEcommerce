@@ -1,0 +1,415 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from new.axilthemes.com/demo/template/etrade/cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 27 Oct 2024 08:10:15 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>eTrade || Cart</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
+
+    <!-- CSS
+    ============================================ -->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/font-awesome.css">
+    <link rel="stylesheet" href="assets/css/vendor/flaticon/flaticon.css">
+    <link rel="stylesheet" href="assets/css/vendor/slick.css">
+    <link rel="stylesheet" href="assets/css/vendor/slick-theme.css">
+    <link rel="stylesheet" href="assets/css/vendor/jquery-ui.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/sal.css">
+    <link rel="stylesheet" href="assets/css/vendor/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/vendor/base.css">
+    <link rel="stylesheet" href="assets/css/style.min.css">
+
+</head>
+
+
+<body class="sticky-header">
+    <!--[if lte IE 9]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+<![endif]-->
+    <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
+    <!-- Start Header -->
+    <div id="header-placeholder"></div>
+    <!-- End Header -->
+
+    <main class="main-wrapper">
+
+        <!-- Start Cart Area  -->
+        <div class="axil-product-cart-area axil-section-gap">
+            <div class="container">
+                <div class="axil-product-cart-wrap">
+                    <div class="product-table-heading">
+                        <h4 class="title">Your Cart</h4>
+                        <a href="#" class="cart-clear">Clear Shoping Cart</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table axil-product-table axil-cart-table mb--40">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="product-remove"></th>
+                                    <th scope="col" class="product-thumbnail">Product</th>
+                                    <th scope="col" class="product-title"></th>
+                                    <th scope="col" class="product-price">Price</th>
+                                    <th scope="col" class="product-quantity">Quantity</th>
+                                    <th scope="col" class="product-subtotal">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <!-- <tbody>
+                                <tr>
+                                    <td class="product-remove"><a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
+                                    <td class="product-thumbnail"><a href="single-product-3.html"><img src="assets/images/product/electric/product-01.png" alt="Digital Product"></a></td>
+                                    <td class="product-title"><a href="single-product-3.html">Wireless PS Handler</a></td>
+                                    <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>124.00</td>
+                                    <td class="product-quantity" data-title="Qty">
+                                        <div class="pro-qty">
+                                            <input type="number" class="quantity-input" value="1">
+                                        </div>
+                                    </td>
+                                    <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol">$</span>275.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="product-remove"><a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
+                                    <td class="product-thumbnail"><a href="single-product-3-2.html"><img src="assets/images/product/electric/product-02.png" alt="Digital Product"></a></td>
+                                    <td class="product-title"><a href="single-product-3-2.html">Gradient Light Keyboard</a></td>
+                                    <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>124.00</td>
+                                    <td class="product-quantity" data-title="Qty">
+                                        <div class="pro-qty">
+                                            <input type="number" class="quantity-input" value="1">
+                                        </div>
+                                    </td>
+                                    <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol">$</span>275.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="product-remove"><a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
+                                    <td class="product-thumbnail"><a href="single-product-3-3.html"><img src="assets/images/product/electric/product-03.png" alt="Digital Product"></a></td>
+                                    <td class="product-title"><a href="single-product-3-3.html">HD CC Camera</a></td>
+                                    <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>124.00</td>
+                                    <td class="product-quantity" data-title="Qty">
+                                        <div class="pro-qty">
+                                            <input type="number" class="quantity-input" value="1">
+                                        </div>
+                                    </td>
+                                    <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol">$</span>275.00</td>
+                                </tr>
+                            </tbody> -->
+                            <tbody id="cart-items">
+                                <!-- Cart items will be populated here -->
+                              </tbody>
+                        </table>
+                    </div>
+                    <div class="cart-update-btn-area">
+                        <div class="input-group product-cupon">
+                            <input placeholder="Enter coupon code" type="text">
+                            <div class="product-cupon-btn">
+                                <button type="submit" class="axil-btn btn-outline">Apply</button>
+                            </div>
+                        </div>
+                        <div class="update-btn">
+                            <a href="#" class="axil-btn btn-outline">Update Cart</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-7 offset-xl-7 offset-lg-5">
+                            <div class="axil-order-summery mt--80">
+                                <h5 class="title mb--20">Order Summary</h5>
+                                <div class="summery-table-wrap">
+                                    <table class="table summery-table mb--30">
+                                        <tbody>
+                                            <tr class="order-subtotal">
+                                                <td>Subtotal</td>
+                                                <td>$117.00</td>
+                                            </tr>
+                                            <tr class="order-shipping">
+                                                <td>Shipping</td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input type="radio" id="radio1" name="shipping" checked>
+                                                        <label for="radio1">Free Shippping</label>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="radio" id="radio2" name="shipping">
+                                                        <label for="radio2">Local: $35.00</label>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="radio" id="radio3" name="shipping">
+                                                        <label for="radio3">Flat rate: $12.00</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="order-tax">
+                                                <td>State Tax</td>
+                                                <td>$8.00</td>
+                                            </tr>
+                                            <tr class="order-total">
+                                                <td>Total</td>
+                                                <td class="order-total-amount">$125.00</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <a href="checkout.html" class="axil-btn btn-bg-primary checkout-btn">Process to Checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Cart Area  -->
+
+    </main>
+
+
+    <div class="service-area">
+        <div class="container">
+            <div class="row row-cols-xl-4 row-cols-sm-2 row-cols-1 row--20">
+                <div class="col">
+                    <div class="service-box service-style-2">
+                        <div class="icon">
+                            <img src="assets/images/icons/service1.png" alt="Service">
+                        </div>
+                        <div class="content">
+                            <h6 class="title">Fast &amp; Secure Delivery</h6>
+                            <p>Tell about your service.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="service-box service-style-2">
+                        <div class="icon">
+                            <img src="assets/images/icons/service2.png" alt="Service">
+                        </div>
+                        <div class="content">
+                            <h6 class="title">Money Back Guarantee</h6>
+                            <p>Within 10 days.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="service-box service-style-2">
+                        <div class="icon">
+                            <img src="assets/images/icons/service3.png" alt="Service">
+                        </div>
+                        <div class="content">
+                            <h6 class="title">24 Hour Return Policy</h6>
+                            <p>No question ask.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="service-box service-style-2">
+                        <div class="icon">
+                            <img src="assets/images/icons/service4.png" alt="Service">
+                        </div>
+                        <div class="content">
+                            <h6 class="title">Pro Quality Support</h6>
+                            <p>24/7 Live support.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Start Footer Area  -->
+    <div id="footer-placeholder"></div>
+
+    <!-- JS
+============================================ -->
+    <!-- Modernizer JS -->
+    <script src="assets/js/vendor/modernizr.min.js"></script>
+    <!-- jQuery JS -->
+    <script src="assets/js/vendor/jquery.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="assets/js/vendor/popper.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <script src="assets/js/vendor/slick.min.js"></script>
+    <script src="assets/js/vendor/js.cookie.js"></script>
+    <!-- <script src="assets/js/vendor/jquery.style.switcher.js"></script> -->
+    <script src="assets/js/vendor/jquery-ui.min.js"></script>
+    <script src="assets/js/vendor/jquery.ui.touch-punch.min.js"></script>
+    <script src="assets/js/vendor/jquery.countdown.min.js"></script>
+    <script src="assets/js/vendor/sal.js"></script>
+    <script src="assets/js/vendor/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/vendor/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/vendor/isotope.pkgd.min.js"></script>
+    <script src="assets/js/vendor/counterup.js"></script>
+    <script src="assets/js/vendor/waypoints.min.js"></script>
+
+    <!-- Main JS -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/load-component.js"></script>
+    <!-- <script>
+        async function fetchCart() {
+          try {
+            const response = await fetch('http://localhost:4000/cart');
+            const carts = await response.json();
+            populateCart(carts[0]); // Assuming fetching the first cart for example
+          } catch (error) {
+            console.error('Error fetching cart:', error);
+          }
+        }
+    
+        function populateCart(cart) {
+          const cartItemsContainer = document.getElementById('cart-items');
+          cartItemsContainer.innerHTML = ''; // Clear existing items
+    
+          cart.cart_items.forEach(item => {
+            const product = item.product_id;
+            const quantity = item.quantity;
+            const subtotal = product.price * quantity;
+    
+            const row = document.createElement('tr');
+    
+            row.innerHTML = `
+              <td class="product-remove"><a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
+              <td class="product-thumbnail"><a href="#"><img src="http://localhost:4000/${product.image} alt="${product.name}"></a></td>
+              <td class="product-title"><a href="#">${product.name}</a></td>
+              <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>${product.price}</td>
+              <td class="product-quantity" data-title="Qty">
+                <div class="pro-qty">
+                  <input type="number" class="quantity-input" value="${quantity}">
+                </div>
+              </td>
+              <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol">$</span>${subtotal}</td>
+            `;
+    
+            cartItemsContainer.appendChild(row);
+          });
+        }
+    
+        document.addEventListener('DOMContentLoaded', fetchCart);
+      </script> -->
+      // Add this script to cart.html before closing body tag
+      <script>
+      // Cart management functionality
+      const API_BASE_URL = 'http://localhost:4000';
+let cartItems = [];
+
+// Initialize cart
+function init() {
+    loadCartFromStorage();
+    renderCart();
+}
+
+// Load cart from localStorage
+function loadCartFromStorage() {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+        cartItems = JSON.parse(savedCart);
+    }
+}
+
+// Save cart to localStorage
+function saveCartToStorage() {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+}
+
+// Render cart items
+function renderCart() {
+    const cartContainer = document.getElementById('cart-items');
+    const subtotalElement = document.querySelector('.order-subtotal td:last-child');
+    const totalElement = document.querySelector('.order-total-amount');
+    
+    if (cartItems.length === 0) {
+        cartContainer.innerHTML = `
+            <tr>
+                <td colspan="6" class="text-center">
+                    <p class="mb-4">Your cart is empty</p>
+                    <a href="index.html" class="axil-btn btn-outline">Continue Shopping</a>
+                </td>
+            </tr>
+        `;
+        subtotalElement.textContent = '$0.00';
+        totalElement.textContent = '$0.00';
+        return;
+    }
+
+    cartContainer.innerHTML = cartItems.map(item => `
+        <tr>
+            <td class="product-remove">
+                <a href="#" class="remove-wishlist" onclick="removeFromCart('${item.product_id}'); return false;">
+                    <i class="fal fa-times"></i>
+                </a>
+            </td>
+            <td class="product-thumbnail">
+                <a href="#">
+                    <img src="${API_BASE_URL}/${item.product.image || '/api/placeholder/100/100'}" alt="${item.product.name}">
+                </a>
+            </td>
+            <td class="product-title">
+                <a href="#">${item.product.name}</a>
+            </td>
+            <td class="product-price" data-title="Price">
+                <span class="currency-symbol">$</span>${item.product.price.toFixed(2)}
+            </td>
+            <td class="product-quantity" data-title="Qty">
+                <div class="pro-qty">
+                    <input type="number" 
+                           class="quantity-input" 
+                           value="${item.quantity}"
+                           min="1"
+                           onchange="updateQuantity('${item.product_id}', this.value)">
+                </div>
+            </td>
+            <td class="product-subtotal" data-title="Subtotal">
+                <span class="currency-symbol">$</span>${(item.product.price * item.quantity).toFixed(2)}
+            </td>
+            <td 
+                            onclick="removeFromCart('${item.product_id}')"
+                            class="text-red-500 hover:text-red-700"
+                        >
+                            Remove
+                        </td>
+        </tr>
+    `).join('');
+
+    // Update totals
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+    const tax = subtotal * 0.08; // 8% tax
+    const total = subtotal + tax; // Assuming free shipping
+
+    subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+    document.querySelector('.order-tax td:last-child').textContent = `$${tax.toFixed(2)}`;
+    totalElement.textContent = `$${total.toFixed(2)}`;
+}
+
+// Update quantity
+function updateQuantity(productId, newQuantity) {
+    const item = cartItems.find(item => item.product_id === productId);
+    if (item) {
+        item.quantity = Math.max(1, parseInt(newQuantity));
+        saveCartToStorage();
+        renderCart();
+    }
+}
+
+// Remove item from cart
+function removeFromCart(productId) {
+    cartItems = cartItems.filter(item => item.product_id !== productId);
+    saveCartToStorage();
+    renderCart();
+}
+
+// Clear cart
+document.querySelector('.cart-clear').addEventListener('click', function(e) {
+    e.preventDefault();
+    cartItems = [];
+    saveCartToStorage();
+    renderCart();
+});
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', init);
+      </script>
+</body>
+
+
+<!-- Mirrored from new.axilthemes.com/demo/template/etrade/cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 27 Oct 2024 08:10:15 GMT -->
+</html>

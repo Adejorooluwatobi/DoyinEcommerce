@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg p-4 mb-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Shopping Cart</h1>
+            <div class="flex gap-4">
+                <a href="index.html" class="px-4 py-2 text-gray-600 hover:text-gray-900">Back to Products</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <!-- Cart Items -->
+            <div id="cartItems" class="space-y-4 mb-8">
+                <!-- Cart items will be loaded here -->
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="border-t pt-4">
+                <div class="flex justify-between items-center text-xl font-bold mb-4">
+                    <span>Total</span>
+                    <span>$<span id="cartTotal">0.00</span></span>
+                </div>
+                <button 
+                    onclick="checkout()"
+                    class="w-full bg-blue-500 text-white py-3 rounded-md hover:bg-blue-600 transition-colors"
+                >
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:4000';
+        let cartItems = [];
+
+        // Initialize cart
+        function init() {
+            loadCartFromStorage();
+            renderCart();
+        }
+
+        // Load cart from localStorage
+        function loadCartFromStorage() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cartItems = JSON.parse(savedCart);
+            }
+        }
+
+        // Save cart to localStorage
+        function saveCartToStorage() {
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+        }
+
+        // Render cart items
+        function renderCart() {
+            const cartContainer = document.getElementById('cartItems');
+            
+            if (cartItems.length === 0) {
+                cartContainer.innerHTML = `
+                    <div class="text-center py-8">
+                        <p class="text-gray-500 mb-4">Your cart is empty</p>
+                        <a href="index.html" class="text-blue-500 hover:text-blue-600">
+                            Continue Shopping
+                        </a>
+                    </div>
+                `;
+                document.getElementById('cartTotal').textContent = '0.00';
+                return;
+            }
+
+            cartContainer.innerHTML = cartItems.map(item => `
+                <div class="flex items-center justify-between border-b pb-4">
+                    <div class="flex items-center space-x-4">
+                        <img 
+                            src="${API_BASE_URL}/${item.product.image || '/api/placeholder/100/100'}" 
+                            alt="${item.product.name}"
+                            class="w-24 h-24 object-cover rounded-md"
+                        >
+                        <div>
+                            <h3 class="font-semibold text-lg">${item.product.name}</h3>
+                            <p class="text-gray-600">$${item.product.price} each</p>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <button 
+                                    onclick="updateQuantity('${item.product_id}', -1)"
+                                    class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                                >-</button>
+                                <span class="w-8 text-center">${item.quantity}</span>
+                                <button 
+                                    onclick="updateQuantity('${item.product_id}', 1)"
+                                    class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                                >+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end space-y-2">
+                        <span class="font-semibold">
+                            $${(item.product.price * item.quantity).toFixed(2)}
+                        </span>
+                        <button 
+                            onclick="removeFromCart('${item.product_id}')"
+                            class="text-red-500 hover:text-red-700"
+                        >
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update total
+            const total = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+            document.getElementById('cartTotal').textContent = total.toFixed(2);
+        }
+
+        // Update quantity
+        function updateQuantity(productId, delta) {
+            const item = cartItems.find(item => item.product_id === productId);
+            if (item) {
+                item.quantity = Math.max(0, item.quantity + delta);
+                if (item.quantity === 0) {
+                    removeFromCart(productId);
+                } else {
+                    saveCartToStorage();
+                    renderCart();
+                }
+            }
+        }
+
+        // Remove item from cart
+        function removeFromCart(productId) {
+            cartItems = cartItems.filter(item => item.product_id !== productId);
+            saveCartToStorage();
+            renderCart();
+        }
+
+        // Checkout function
+        function checkout() {
+            if (cartItems.length === 0) {
+                alert('Your cart is empty');
+                return;
+            }
+            
+            // Here you would typically integrate with your checkout API
+            alert('Proceeding to checkout...');
+            // You can add your checkout logic here
+        }
+
+        // Initialize the page
+        init();
+    </script>
+</body>
+</html>
