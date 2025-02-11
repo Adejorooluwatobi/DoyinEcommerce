@@ -146,6 +146,18 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 
+<<<<<<< HEAD
+=======
+    function getProductDetails(productId) {
+        // Mock function to get product details by ID
+        return {
+            id: productId,
+            name: `Product ${productId}`,
+            price: `$${productId * 10}`
+        };
+    }
+
+>>>>>>> ec7bd3754c4f0d1078dac271e59d242a3b64c7b1
     // Add event listeners for interactions
     document.addEventListener('click', function(e) {
         if (e.target.matches('.quickview a')) {

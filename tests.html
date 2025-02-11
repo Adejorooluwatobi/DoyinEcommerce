@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Product List</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -69,3 +70,252 @@ fetchProducts();
     </script>
 </body>
 </html>
+=======
+    <title>Shopping Interface</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Error Alert -->
+    <div id="errorAlert" class="hidden fixed top-4 right-4 bg-red-500 text-white p-4 rounded-md shadow-lg">
+        <p id="errorMessage"></p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Shop</h1>
+            <div class="flex gap-4">
+                <button onclick="showProducts()" class="px-4 py-2 text-gray-600 hover:text-gray-900">Products</button>
+                <button onclick="showCart()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                    Cart (<span id="cartCount">0</span>)
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4">
+        <!-- Products Page -->
+        <div id="productsPage" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <!-- Products will be loaded here -->
+        </div>
+
+        <!-- Cart Page -->
+        <div id="cartPage" class="hidden">
+            <h2 class="text-2xl font-bold mb-4">Your Cart</h2>
+            <div id="cartItems" class="space-y-4">
+                <!-- Cart items will be loaded here -->
+            </div>
+            <div class="mt-8">
+                <div class="text-xl font-bold">Total: $<span id="cartTotal">0</span></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // API base URL
+        const API_BASE_URL = 'http://localhost:4000';
+
+        // State management
+        let cartItems = [];
+        let products = [];
+
+        // Show error message
+        function showError(message) {
+            const errorAlert = document.getElementById('errorAlert');
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorAlert.classList.remove('hidden');
+            setTimeout(() => {
+                errorAlert.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Show/hide loading spinner
+        function toggleLoading(show) {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.classList.toggle('hidden', !show);
+        }
+
+        // Initialize the application
+        async function init() {
+            await loadProducts();
+            showProducts();
+            // Load cart from localStorage if available
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cartItems = JSON.parse(savedCart);
+                updateCartCount();
+            }
+        }
+
+        // Load products from the API
+        async function loadProducts() {
+            try {
+                toggleLoading(true);
+                const response = await axios.get(`${API_BASE_URL}/product`);
+                products = response.data;
+                renderProducts();
+            } catch (error) {
+                console.error('Error loading products:', error);
+                showError('Failed to load products. Please try again later.');
+            } finally {
+                toggleLoading(false);
+            }
+        }
+
+        // Render products to the page
+        function renderProducts() {
+            const productsContainer = document.getElementById('productsPage');
+            if (products.length === 0) {
+                productsContainer.innerHTML = '<div class="col-span-full text-center text-gray-500">No products available</div>';
+                return;
+            }
+
+            productsContainer.innerHTML = products.map(product => `
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <img src="${product.image || '/api/placeholder/300/200'}" alt="${product.name}" class="w-full h-48 object-cover rounded-md">
+                    <h3 class="text-lg font-semibold mt-2">${product.name}</h3>
+                    <p class="text-gray-600">${product.description || 'No description available'}</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-lg font-bold">$${product.price}</span>
+                        <button 
+                            onclick="addToCart('${product._id}')"
+                            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add item to cart
+        async function addToCart(productId) {
+            try {
+                const product = products.find(p => p._id === productId);
+                if (!product) {
+                    showError('Product not found');
+                    return;
+                }
+
+                const existingItem = cartItems.find(item => item.product_id === productId);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cartItems.push({
+                        product_id: productId,
+                        product: product,
+                        quantity: 1
+                    });
+                }
+
+                // Save cart to localStorage
+                localStorage.setItem('cart', JSON.stringify(cartItems));
+
+                updateCartCount();
+                if (document.getElementById('cartPage').style.display !== 'none') {
+                    renderCart();
+                }
+            } catch (error) {
+                showError('Failed to add item to cart');
+            }
+        }
+
+        // Remove item from cart
+        function removeFromCart(productId) {
+            cartItems = cartItems.filter(item => item.product_id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            updateCartCount();
+            renderCart();
+        }
+
+        // Update quantity in cart
+        function updateQuantity(productId, delta) {
+            const item = cartItems.find(item => item.product_id === productId);
+            if (item) {
+                item.quantity = Math.max(0, item.quantity + delta);
+                if (item.quantity === 0) {
+                    removeFromCart(productId);
+                } else {
+                    localStorage.setItem('cart', JSON.stringify(cartItems));
+                    renderCart();
+                }
+                updateCartCount();
+            }
+        }
+
+        // Update cart count in navigation
+        function updateCartCount() {
+            const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        // Render cart items
+        function renderCart() {
+            const cartContainer = document.getElementById('cartItems');
+            if (cartItems.length === 0) {
+                cartContainer.innerHTML = '<div class="text-center text-gray-500">Your cart is empty</div>';
+                document.getElementById('cartTotal').textContent = '0.00';
+                return;
+            }
+
+            cartContainer.innerHTML = cartItems.map(item => `
+                <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <img src="${API_BASE_URL}/${item.product.image || '/api/placeholder/100/100'}" alt="${item.product.name}" class="w-20 h-20 object-cover rounded-md">
+                        <div>
+                            <h3 class="font-semibold">${item.product.name}</h3>
+                            <p class="text-gray-600">$${item.product.price} each</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <button 
+                                onclick="updateQuantity('${item.product_id}', -1)"
+                                class="px-2 py-1 bg-gray-200 rounded"
+                            >-</button>
+                            <span class="w-8 text-center">${item.quantity}</span>
+                            <button 
+                                onclick="updateQuantity('${item.product_id}', 1)"
+                                class="px-2 py-1 bg-gray-200 rounded"
+                            >+</button>
+                        </div>
+                        <button 
+                            onclick="removeFromCart('${item.product_id}')"
+                            class="px-3 py-1 text-red-500 hover:text-red-700"
+                        >Remove</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update total
+            const total = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+            document.getElementById('cartTotal').textContent = total.toFixed(2);
+        }
+
+        // Show products page
+        function showProducts() {
+            document.getElementById('productsPage').style.display = 'grid';
+            document.getElementById('cartPage').style.display = 'none';
+        }
+
+        // Show cart page
+        function showCart() {
+            document.getElementById('productsPage').style.display = 'none';
+            document.getElementById('cartPage').style.display = 'block';
+            renderCart();
+        }
+
+        // Initialize the application
+        init();
+    </script>
+</body>
+</html>
+>>>>>>> ec7bd3754c4f0d1078dac271e59d242a3b64c7b1

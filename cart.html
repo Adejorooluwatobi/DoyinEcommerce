@@ -62,7 +62,11 @@
                                     <th scope="col" class="product-subtotal">Subtotal</th>
                                 </tr>
                             </thead>
+<<<<<<< HEAD
                             <tbody>
+=======
+                            <!-- <tbody>
+>>>>>>> ec7bd3754c4f0d1078dac271e59d242a3b64c7b1
                                 <tr>
                                     <td class="product-remove"><a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
                                     <td class="product-thumbnail"><a href="single-product-3.html"><img src="assets/images/product/electric/product-01.png" alt="Digital Product"></a></td>
@@ -99,7 +103,14 @@
                                     </td>
                                     <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol">$</span>275.00</td>
                                 </tr>
+<<<<<<< HEAD
                             </tbody>
+=======
+                            </tbody> -->
+                            <tbody id="cart-items">
+                                <!-- Cart items will be populated here -->
+                              </tbody>
+>>>>>>> ec7bd3754c4f0d1078dac271e59d242a3b64c7b1
                         </table>
                     </div>
                     <div class="cart-update-btn-area">
@@ -242,7 +253,173 @@
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/load-component.js"></script>
+<<<<<<< HEAD
 
+=======
+    <!-- <script>
+        async function fetchCart() {
+          try {
+            const response = await fetch('http://localhost:4000/cart');
+            const carts = await response.json();
+            populateCart(carts[0]); // Assuming fetching the first cart for example
+          } catch (error) {
+            console.error('Error fetching cart:', error);
+          }
+        }
+    
+        function populateCart(cart) {
+          const cartItemsContainer = document.getElementById('cart-items');
+          cartItemsContainer.innerHTML = ''; // Clear existing items
+    
+          cart.cart_items.forEach(item => {
+            const product = item.product_id;
+            const quantity = item.quantity;
+            const subtotal = product.price * quantity;
+    
+            const row = document.createElement('tr');
+    
+            row.innerHTML = `
+              <td class="product-remove"><a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
+              <td class="product-thumbnail"><a href="#"><img src="http://localhost:4000/${product.image} alt="${product.name}"></a></td>
+              <td class="product-title"><a href="#">${product.name}</a></td>
+              <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>${product.price}</td>
+              <td class="product-quantity" data-title="Qty">
+                <div class="pro-qty">
+                  <input type="number" class="quantity-input" value="${quantity}">
+                </div>
+              </td>
+              <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol">$</span>${subtotal}</td>
+            `;
+    
+            cartItemsContainer.appendChild(row);
+          });
+        }
+    
+        document.addEventListener('DOMContentLoaded', fetchCart);
+      </script> -->
+      // Add this script to cart.html before closing body tag
+      <script>
+      // Cart management functionality
+      const API_BASE_URL = 'http://localhost:4000';
+let cartItems = [];
+
+// Initialize cart
+function init() {
+    loadCartFromStorage();
+    renderCart();
+}
+
+// Load cart from localStorage
+function loadCartFromStorage() {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+        cartItems = JSON.parse(savedCart);
+    }
+}
+
+// Save cart to localStorage
+function saveCartToStorage() {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+}
+
+// Render cart items
+function renderCart() {
+    const cartContainer = document.getElementById('cart-items');
+    const subtotalElement = document.querySelector('.order-subtotal td:last-child');
+    const totalElement = document.querySelector('.order-total-amount');
+    
+    if (cartItems.length === 0) {
+        cartContainer.innerHTML = `
+            <tr>
+                <td colspan="6" class="text-center">
+                    <p class="mb-4">Your cart is empty</p>
+                    <a href="index.html" class="axil-btn btn-outline">Continue Shopping</a>
+                </td>
+            </tr>
+        `;
+        subtotalElement.textContent = '$0.00';
+        totalElement.textContent = '$0.00';
+        return;
+    }
+
+    cartContainer.innerHTML = cartItems.map(item => `
+        <tr>
+            <td class="product-remove">
+                <a href="#" class="remove-wishlist" onclick="removeFromCart('${item.product_id}'); return false;">
+                    <i class="fal fa-times"></i>
+                </a>
+            </td>
+            <td class="product-thumbnail">
+                <a href="#">
+                    <img src="${API_BASE_URL}/${item.product.image || '/api/placeholder/100/100'}" alt="${item.product.name}">
+                </a>
+            </td>
+            <td class="product-title">
+                <a href="#">${item.product.name}</a>
+            </td>
+            <td class="product-price" data-title="Price">
+                <span class="currency-symbol">$</span>${item.product.price.toFixed(2)}
+            </td>
+            <td class="product-quantity" data-title="Qty">
+                <div class="pro-qty">
+                    <input type="number" 
+                           class="quantity-input" 
+                           value="${item.quantity}"
+                           min="1"
+                           onchange="updateQuantity('${item.product_id}', this.value)">
+                </div>
+            </td>
+            <td class="product-subtotal" data-title="Subtotal">
+                <span class="currency-symbol">$</span>${(item.product.price * item.quantity).toFixed(2)}
+            </td>
+            <td 
+                            onclick="removeFromCart('${item.product_id}')"
+                            class="text-red-500 hover:text-red-700"
+                        >
+                            Remove
+                        </td>
+        </tr>
+    `).join('');
+
+    // Update totals
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+    const tax = subtotal * 0.08; // 8% tax
+    const total = subtotal + tax; // Assuming free shipping
+
+    subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+    document.querySelector('.order-tax td:last-child').textContent = `$${tax.toFixed(2)}`;
+    totalElement.textContent = `$${total.toFixed(2)}`;
+}
+
+// Update quantity
+function updateQuantity(productId, newQuantity) {
+    const item = cartItems.find(item => item.product_id === productId);
+    if (item) {
+        item.quantity = Math.max(1, parseInt(newQuantity));
+        saveCartToStorage();
+        renderCart();
+    }
+}
+
+// Remove item from cart
+function removeFromCart(productId) {
+    cartItems = cartItems.filter(item => item.product_id !== productId);
+    saveCartToStorage();
+    renderCart();
+}
+
+// Clear cart
+document.querySelector('.cart-clear').addEventListener('click', function(e) {
+    e.preventDefault();
+    cartItems = [];
+    saveCartToStorage();
+    renderCart();
+});
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', init);
+      </script>
+>>>>>>> ec7bd3754c4f0d1078dac271e59d242a3b64c7b1
 </body>
 
 

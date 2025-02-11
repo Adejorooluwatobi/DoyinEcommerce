@@ -33,6 +33,43 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error fetching categories:', error);
     }
 
+<<<<<<< HEAD
+=======
+    // Add to Cart functionality
+    document.querySelectorAll('.add-to-cart-button').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            event.preventDefault();
+            const productId = button.getAttribute('data-product-id');
+            const productTitle = button.getAttribute('data-product-title');
+            const productPrice = button.getAttribute('data-product-price');
+            const productImage = button.getAttribute('data-product-image');
+
+            const cartItem = {
+                id: productId,
+                title: productTitle,
+                price: parseFloat(productPrice),
+                quantity: 1,
+                image: productImage
+            };
+
+            try {
+                await fetch('http://localhost:4000/cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(cartItem)
+                });
+
+                // Navigate to cart page
+                window.location.href = 'cart.html';
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+            }
+        });
+    });
+
+>>>>>>> ec7bd3754c4f0d1078dac271e59d242a3b64c7b1
     // Pagination and product fetching setup
     let currentPage = 1;
     const limit = 12;
@@ -84,7 +121,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 <div class="product-hover-action">
                                     <ul class="cart-action">
                                         <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a></li>
+<<<<<<< HEAD
                                         <li class="select-option"><a href="cart.html">Add to Cart</a></li>
+=======
+                                        
+                                        <li class="select-option">
+                                            <button onclick="addToCart('${product._id}', '${product.name}', ${discountedPrice}, '${product.image}')" class="axil-btn">Add to Cart</button>
+                                        </li>
+>>>>>>> ec7bd3754c4f0d1078dac271e59d242a3b64c7b1
                                         <li class="quickview"><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a></li>
                                     </ul>
                                 </div>
@@ -136,4 +180,67 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initial fetch of products (all products)
     fetchProducts();
+<<<<<<< HEAD
 });
+=======
+});
+
+async function addToCart(productId, name, price, image) {
+    try {
+        // Check if cart exists in localStorage
+        let cartId = localStorage.getItem('cartId');
+        let cart;
+
+        if (!cartId) {
+            // Create new cart
+            const response = await fetch('http://localhost:4000/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    customer_id: 'default_customer',
+                    cart_items: [{
+                        product_id: productId,
+                        quantity: 1
+                    }]
+                })
+            });
+            cart = await response.json();
+            localStorage.setItem('cartId', cart._id);
+        } else {
+            // Update existing cart
+            const response = await fetch(`http://localhost:4000/cart/${cartId}`);
+            cart = await response.json();
+            
+            const existingItem = cart.cart_items.find(item => 
+                item.product_id._id === productId
+            );
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.cart_items.push({
+                    product_id: productId,
+                    quantity: 1
+                });
+            }
+
+            await fetch(`http://localhost:4000/cart/${cartId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(cart)
+            });
+        }
+
+        // Show success message
+        alert('Product added to cart successfully!');
+        
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+        alert('Failed to add product to cart');
+    }
+}
+>>>>>>> ec7bd3754c4f0d1078dac271e59d242a3b64c7b1

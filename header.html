@@ -105,7 +105,11 @@
                             </li>
                             <li class="shopping-cart">
                                 <a href="#" class="cart-dropdown-btn">
+<<<<<<< HEAD
                                     <span class="cart-count">3</span>
+=======
+                                    <span class="cart-count" id="cart-count" id="cartCount">0</span>
+>>>>>>> ec7bd3754c4f0d1078dac271e59d242a3b64c7b1
                                     <i class="flaticon-shopping-cart"></i>
                                 </a>
                             </li>
@@ -223,6 +227,24 @@
     <script src="assets/js/vendor/counterup.js"></script>
     <script src="assets/js/vendor/waypoints.min.js"></script>
 
+<<<<<<< HEAD
+=======
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
+
+        function updateCartCount() {
+            const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            document.getElementById('cart-count').innerText = cartItems.length;
+        }
+
+        window.addEventListener('storage', function() {
+            updateCartCount();
+        });
+    </script>
+
+>>>>>>> ec7bd3754c4f0d1078dac271e59d242a3b64c7b1
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
 
